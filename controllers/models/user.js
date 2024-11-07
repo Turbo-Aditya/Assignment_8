@@ -36,7 +36,7 @@ const userSchema = mongoose.Schema({
         trim: true,
         validate: {
             validator: function(v) {
-                // Ensure the name contains at least two words (first name and last name)
+               
                 return /^([a-zA-Z]+(?: [a-zA-Z]+)+)$/.test(v);
             },
             message: 'Name must contain at least a first and last name.'
@@ -55,17 +55,14 @@ const imageSchema = mongoose.Schema({
 
 userSchema.pre('save', async function (next) {
     try {
-        // Ensure validation of email, name, and password happens before proceeding
+      
         const user = this;
-
     
         // Password hashing
         if (user.isModified('password')) {
             const hashedPassword = await bcrypt.hash(user.password, saltRounds);
             user.password = hashedPassword;
         }
-
-        // Proceed with saving the user
         next();
     } catch (err) {
         next(err);
